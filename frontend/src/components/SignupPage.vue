@@ -16,13 +16,20 @@
       <p>Mot de passe</p>
       <input v-model="password" type="password" />
     </div>
+    <div class="form_item">
+      <p>Photo de profil</p>
+      <upload-image @imageUploaded="profilePicture"></upload-image>
+    </div>
+
     <button @click="signup()">S'inscrire</button>
-    <button @click="goTo()">Aller</button>
   </div>
 </template>
 
 <script>
+import UserService from "../services/userService";
+import UploadImage from "./UploadImage.vue";
 export default {
+  components: { UploadImage },
   name: "SignupPage",
   data() {
     return {
@@ -30,38 +37,23 @@ export default {
       lastName: "",
       email: "",
       password: "",
+      profilePicture: "",
     };
   },
   methods: {
     signup() {
-      const route = "http://localhost:3000/api/user/signup";
-      const body = {
+      const user = {
         firstName: this.firstName,
         lastName: this.lastName,
         email: this.email,
         password: this.password,
-        profilePicture: "",
+        profilePicture: this.profilePicture,
         isAdmin: "false",
       };
-      console.log(JSON.stringify(body));
-      fetch(route, {
-        method: "POST",
-        body: JSON.stringify(body),
-        headers: { "Content-type": "application/json; charset=UTF-8" },
-      })
-        .then((res) => {
-          if (res.ok) {
-            return res.json();
-          }
-        })
-        .then(() => {
-          console.log(document.location.href);
-          window.location.href = "/homePage";
-        });
-    },
-    goTo() {
-      console.log(document.location.href);
-      window.location.href = "/homePage";
+      console.log(user);
+      UserService.signup(user).then((res) => {
+        this.$emit("logged", res.id);
+      });
     },
   },
 };
