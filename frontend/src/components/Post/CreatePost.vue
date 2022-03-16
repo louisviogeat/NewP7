@@ -13,8 +13,8 @@
 </template>
 
 <script>
-import UploadImage from "./UploadImage.vue";
-import HttpService from "../services/httpService";
+import UploadImage from "../UploadImage.vue";
+import HttpService from "../../services/httpService";
 export default {
   name: "createPost",
   components: {

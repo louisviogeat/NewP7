@@ -26,8 +26,8 @@
 </template>
 
 <script>
-import UserService from "../services/userService";
-import UploadImage from "./UploadImage.vue";
+import UserService from "../../services/userService";
+import UploadImage from "../UploadImage.vue";
 export default {
   components: { UploadImage },
   name: "SignupPage",

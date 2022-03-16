@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import UserService from "../services/userService";
+import UserService from "../../services/userService";
 export default {
   name: "LoginPage",
   data() {

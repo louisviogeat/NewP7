@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import HttpService from "../services/httpService";
+import HttpService from "../../services/httpService";
 export default {
   name: "createComment",
   props: { postId: Number },

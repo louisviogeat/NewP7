@@ -11,8 +11,8 @@
 </template>
 
 <script>
-import LoginPage from "../components/LoginPage.vue";
-import SignupPage from "../components/SignupPage.vue";
+import LoginPage from "../components/User/LoginPage.vue";
+import SignupPage from "../components/User/SignupPage.vue";
 import HttpService from "../services/httpService";
 export default {
   components: { SignupPage, LoginPage },
