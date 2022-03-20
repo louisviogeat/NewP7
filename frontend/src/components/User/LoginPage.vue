@@ -1,10 +1,10 @@
 <template>
-  <div>
-    <div>
+  <div class="form">
+    <div class="form_item">
       <label>Email </label>
       <input v-model="email" />
     </div>
-    <div>
+    <div class="form_item">
       <label>Mot de passe </label>
       <input v-model="password" />
     </div>
@@ -36,5 +36,5 @@ export default {
 };
 </script>
 
-<style>
+<style lang='scss'>
 </style>

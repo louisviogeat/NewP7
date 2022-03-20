@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :key="componentKey">
     <p>Publié par {{ post.user.firstName }} {{ post.user.lastName }}</p>
     <h2>{{ post.text }}</h2>
     <div>
@@ -48,7 +48,7 @@ export default {
   props: { post: Object },
   data() {
     return {
-      postKey: 0,
+      componentKey: 0,
       creationPost: false,
       updatingPost: false,
       newText: "",
@@ -70,7 +70,7 @@ export default {
       };
       HttpService.post(route, body)
         .then(() => {
-          this.postKey += 1;
+          this.componentKey += 1;
         })
         .catch((err) => {
           console.log("errooooor", err);
@@ -87,6 +87,7 @@ export default {
       console.log("a", body);
       HttpService.put(route, body).then(() => {
         this.updatingPost = false;
+        this.componentKey += 1;
         alert("Post modifié");
       });
     },

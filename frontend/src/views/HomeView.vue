@@ -2,8 +2,6 @@
   <div>
     <label>Page d'accueil</label>
     <div>
-      <button @click="displayAllPosts()">Afficher tous les posts</button>
-      <button @click="loggy()">Log</button>
       <button @click="openCreationPost()">Créer un post</button>
     </div>
     <div class="post" v-if="creationPost">
@@ -29,6 +27,9 @@ export default {
       newText: "",
     };
   },
+  mounted() {
+    this.displayAllPosts();
+  },
   methods: {
     loggy() {
       console.log(this.posts);
@@ -40,13 +41,16 @@ export default {
         });
       });
     },
+    openCreationPost() {
+      this.creationPost = true;
+    },
   },
 };
 </script>
 
 <style lang="scss">
 .post {
-  border: 1px solid darkblue;
+  border: 1px solid rgb(144, 144, 243);
   padding: 2%;
   margin: 2%;
   &_buttons {

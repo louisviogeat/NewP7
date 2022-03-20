@@ -1,12 +1,17 @@
 <template>
-  <div class="connexion">
-    <div class="connexion_buttons">
-      <button @click="isLogin = true">Déjà inscrit</button>
-      <button @click="isLogin = false">Inscription</button>
+  <div>
+    <div class="connexion">
+      <div class="connexion_tabs">
+        <button id="btnSignIn" @click="openTab('sign-in')">Déjà inscrit</button>
+        <button class="extend" id="btnSignUp" @click="openTab('sign-up')">
+          Inscription
+        </button>
+      </div>
+      <div class="connexion_page">
+        <signup-page id="sign-up" @logged="isLogged" />
+        <login-page id="sign-in" @logged="isLogged" />
+      </div>
     </div>
-    <signup-page v-if="!isLogin" @logged="isLogged" />
-    <login-page v-if="isLogin" @logged="isLogged" />
-    <font-awesome-icon icon="user-secret" />
   </div>
 </template>
 
@@ -28,7 +33,38 @@ export default {
       apiUrl: "http://localhost:3000/api/user",
     };
   },
+  mounted() {
+    const signUp = document.getElementById("sign-up");
+    const signIn = document.getElementById("sign-in");
+    const btnSignIn = document.getElementById("btnSignIn");
+    btnSignIn.classList.add("active");
+    signUp.style.display = "none";
+    signIn.style.display = "block";
+  },
   methods: {
+    openTab(tabName) {
+      console.log(tabName);
+      const signUp = document.getElementById("sign-up");
+      const signIn = document.getElementById("sign-in");
+      const btnSignUp = document.getElementById("btnSignUp");
+      const btnSignIn = document.getElementById("btnSignIn");
+      const tabActive = document.getElementsByClassName("active");
+      tabActive[0].classList.remove("active");
+      switch (tabName) {
+        case "sign-in":
+          signUp.style.display = "none";
+          signIn.style.display = "block";
+          btnSignIn.classList.add("active");
+          break;
+        case "sign-up":
+          signIn.style.display = "none";
+          signUp.style.display = "block";
+          btnSignUp.classList.add("active");
+          break;
+        default:
+          break;
+      }
+    },
     isLogged(payload) {
       const route = "user/" + payload;
       HttpService.get(route).then((res) => {
@@ -36,21 +72,49 @@ export default {
         this.$emit("authenticated", res);
       });
     },
-    //openTab(tab) {},
   },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang=scss scoped>
+@import "../main";
+
 .connexion {
-  border: 2px solid blue;
-  &_buttons {
+  margin: 10% 30%;
+  width: 50%;
+  height: 500px;
+  &_tabs {
     display: flex;
     justify-content: space-around;
+    margin-bottom: 0;
     button {
-      width: 100%;
+      margin-bottom: 0%;
     }
   }
+  &_page {
+    padding: 2%;
+    background-color: $secondary;
+  }
 }
+.active {
+  background-color: $secondary;
+  border-radius: 6px 6px 0 0;
+  &:hover {
+    box-shadow: 0;
+  }
+}
+
+/*
+.form {
+  border: 1px solid darkblue;
+  padding: 5%;
+  &_item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5%;
+  }
+}
+*/
 </style>

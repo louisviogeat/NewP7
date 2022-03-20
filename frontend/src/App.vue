@@ -7,16 +7,12 @@
           <img v-if="user.profilePicture" :src="user.profilePicture" alt="" />
           <p>{{ user.firstName }} {{ user.lastName }}</p>
         </div>
-        <div class="userBar_admin">
-          <router-link to="/administration">Administration</router-link>
-        </div>
-      </div>
 
-      <nav>
-        <router-link to="/">Accueil</router-link> |
-        <router-link to="/createPost">Créer un post</router-link> |
-        <router-link to="/connexion">Connexion</router-link>
-      </nav>
+        <button @click="goToAdministrationPage()" v-if="user.isAdmin">
+          Administration
+        </button>
+        <button @click="deconnexion()">Déconnexion</button>
+      </div>
     </header>
     <router-view v-if="user" />
 
@@ -43,29 +39,44 @@ export default {
       this.user = payload;
       console.log("ého maintenant cest lui", this.user);
     },
+    deconnexion() {
+      this.user = "";
+    },
+    goToAdministrationPage() {
+      this.$router.push({ name: "administration" });
+    },
   },
 };
 </script>
 
 <style lang="scss">
+@import "./main";
+
+body {
+  background-color: $bg;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: white;
 }
 
 header {
+  border: 2px solid darkslategrey;
   .userBar {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0 3%;
+
     &_profile {
       display: flex;
     }
     &_admin {
+      display: flex;
     }
   }
   img {

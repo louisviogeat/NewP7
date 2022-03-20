@@ -16,10 +16,6 @@
       <p>Mot de passe</p>
       <input v-model="password" type="password" />
     </div>
-    <div class="form_item">
-      <p>Photo de profil</p>
-      <upload-image @imageUploaded="profilePicture"></upload-image>
-    </div>
 
     <button @click="signup()">S'inscrire</button>
   </div>
@@ -27,9 +23,7 @@
 
 <script>
 import UserService from "../../services/userService";
-import UploadImage from "../UploadImage.vue";
 export default {
-  components: { UploadImage },
   name: "SignupPage",
   data() {
     return {
@@ -37,7 +31,6 @@ export default {
       lastName: "",
       email: "",
       password: "",
-      profilePicture: "",
     };
   },
   methods: {
@@ -47,7 +40,6 @@ export default {
         lastName: this.lastName,
         email: this.email,
         password: this.password,
-        profilePicture: this.profilePicture,
         isAdmin: "false",
       };
       console.log(user);
@@ -60,12 +52,4 @@ export default {
 </script>
 
 <style lang="scss">
-.form {
-  border: 1px solid darkblue;
-  &_item {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-}
 </style>

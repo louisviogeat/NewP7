@@ -1,6 +1,6 @@
 class HttpService {
     apiUrl = "http://localhost:3000/api/";
-    token = JSON.parse(localStorage.getItem("token"));
+    //token = JSON.parse(localStorage.getItem("token"));
     currentUserId = localStorage.getItem('currentUserId');
 
     async handleError(error) {
@@ -8,12 +8,11 @@ class HttpService {
     }
 
     async get(route) {
-        console.log('jappelle la route', route);
-        console.log('avec le token', this.token);
+        const token = JSON.parse(localStorage.getItem("token"));
         return fetch(this.apiUrl + route, {
             method: "GET",
             headers: {
-                Authorization: `Bearer ${this.token}`,
+                Authorization: `Bearer ${token}`,
                 "Content-type": "application/json; charset=UTF-8",
             },
         })
@@ -25,11 +24,12 @@ class HttpService {
     }
 
     async post(route, body) {
+        const token = JSON.parse(localStorage.getItem("token"));
         return fetch(this.apiUrl + route, {
             method: "POST",
             body: JSON.stringify(body),
             headers: {
-                Authorization: `Bearer ${this.token}`,
+                Authorization: `Bearer ${token}`,
                 "Content-type": "application/json; charset=UTF-8",
             },
         })
@@ -41,6 +41,7 @@ class HttpService {
     }
 
     async put(route, body) {
+        const token = JSON.parse(localStorage.getItem("token"));
         this.get('user/' + this.currentUserId).then((user) => {
             body.isAdmin = user.isAdmin;
             body.userConnected = user.id;
@@ -49,7 +50,7 @@ class HttpService {
                 method: "PUT",
                 body: JSON.stringify(body),
                 headers: {
-                    Authorization: `Bearer ${this.token}`,
+                    Authorization: `Bearer ${token}`,
                     "Content-type": "application/json; charset=UTF-8",
                 },
             }).then((res) => {
@@ -63,6 +64,7 @@ class HttpService {
     }
 
     async delete(route, body) {
+        const token = JSON.parse(localStorage.getItem("token"));
         return this.get('user/' + this.currentUserId).then((user) => {
             console.log('hoo', user);
             body.isAdmin = user.isAdmin;
@@ -71,7 +73,7 @@ class HttpService {
                 method: "DELETE",
                 body: JSON.stringify(body),
                 headers: {
-                    Authorization: `Bearer ${this.token}`,
+                    Authorization: `Bearer ${token}`,
                     "Content-type": "application/json; charset=UTF-8",
                 },
             }).then((res) => {
