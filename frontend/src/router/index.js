@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue';
 import AdministrationView from '../views/AdministrationView.vue';
+import ReloadView from '../views/ReloadView.vue';
 
 const routes = [
   {
@@ -22,6 +23,11 @@ const routes = [
     path: '/administration',
     name: 'administration',
     component: AdministrationView
+  },
+  {
+    path: '/reload',
+    name: 'reload',
+    component: ReloadView
   },
 ]
 

@@ -68,6 +68,7 @@ export default {
     isLogged(payload) {
       const route = "user/" + payload;
       HttpService.get(route).then((res) => {
+        console.log(res);
         this.$router.push({ name: "home" });
         this.$emit("authenticated", res);
       });
@@ -79,42 +80,4 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang=scss scoped>
 @import "../main";
-
-.connexion {
-  margin: 10% 30%;
-  width: 50%;
-  height: 500px;
-  &_tabs {
-    display: flex;
-    justify-content: space-around;
-    margin-bottom: 0;
-    button {
-      margin-bottom: 0%;
-    }
-  }
-  &_page {
-    padding: 2%;
-    background-color: $secondary;
-  }
-}
-.active {
-  background-color: $secondary;
-  border-radius: 6px 6px 0 0;
-  &:hover {
-    box-shadow: 0;
-  }
-}
-
-/*
-.form {
-  border: 1px solid darkblue;
-  padding: 5%;
-  &_item {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 5%;
-  }
-}
-*/
 </style>

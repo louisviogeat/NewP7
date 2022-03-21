@@ -1,19 +1,19 @@
 <template>
   <div class="form">
     <div class="form_item">
-      <p>Prénom</p>
+      <label>Prénom</label>
       <input v-model="firstName" />
     </div>
     <div class="form_item">
-      <p>Nom</p>
+      <label>Nom</label>
       <input v-model="lastName" />
     </div>
     <div class="form_item">
-      <p>Email</p>
+      <label>Email</label>
       <input v-model="email" type="email" />
     </div>
     <div class="form_item">
-      <p>Mot de passe</p>
+      <label>Mot de passe</label>
       <input v-model="password" type="password" />
     </div>
 

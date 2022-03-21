@@ -1,0 +1,55 @@
+.post {
+  padding: 2%;
+  margin: 5%;
+  background-color: lighten($color: $bg, $amount: 5%);
+  &_header {
+      display: flex;
+      flex-direction: column;
+      p {
+          
+        align-self: flex-start;
+      }
+  }
+  &_buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    &_like {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 20px;
+        width: 30px;
+    }
+  }
+  &_actionButtons {
+    display: flex;
+    padding: 1%;
+  }
+}
+
+.comment {
+    background-color: $bg;
+  margin: 2%;
+  padding: 3%;
+  &_buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.new-comment {
+  border: 2px solid green;
+  &_item {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    & :nth-child(1) {
+      flex: 1;
+    }
+    & :nth-child(2) {
+      flex: 3;
+    }
+  }
+}

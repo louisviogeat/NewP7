@@ -1,14 +1,18 @@
 <template>
-  <div>
-    <label>Page d'accueil</label>
+  <div v-if="!update">
     <div>
       <button @click="openCreationPost()">Créer un post</button>
     </div>
     <div class="post" v-if="creationPost">
-      <create-post></create-post>
+      <create-post @postUpdated="isUpdated"></create-post>
     </div>
     <div v-for="post in posts" :key="post.id" class="post">
-      <post-component :post="post"></post-component>
+      <post-component
+        @postUpdated="isUpdated"
+        :post="post"
+        :user="user"
+        :key="componentKey"
+      ></post-component>
     </div>
   </div>
 </template>
@@ -22,15 +26,32 @@ export default {
   name: "HomeView",
   data() {
     return {
+      update: false,
       posts: [],
       creationPost: false,
       newText: "",
+      user: {},
+      componentKey: 0,
     };
   },
   mounted() {
     this.displayAllPosts();
+    const userId = JSON.parse(localStorage.getItem("currentUserId"));
+
+    HttpService.get("user/" + userId).then((res) => {
+      this.user = res;
+    });
   },
   methods: {
+    isUpdated(payload) {
+      //this.update = payload;
+      console.log(payload);
+      this.$router.push({ name: "reload" });
+      setTimeout(() => {
+        this.$router.push({ name: "home" });
+      }, 300);
+      //this.$router.push({ name: "home" });
+    },
     loggy() {
       console.log(this.posts);
     },
@@ -49,30 +70,5 @@ export default {
 </script>
 
 <style lang="scss">
-.post {
-  border: 1px solid rgb(144, 144, 243);
-  padding: 2%;
-  margin: 2%;
-  &_buttons {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  &_actionButtons {
-    display: flex;
-  }
-}
-
-.likeDislike {
-  color: rgb(105, 174, 2);
-}
-
-.comment {
-  border: 1px solid rebeccapurple;
-  &_buttons {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-}
+@import "../main";
 </style>

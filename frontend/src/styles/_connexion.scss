@@ -1,0 +1,29 @@
+.connexion {
+  margin-top: 10%;
+  width: 80%;
+  height: 500px;
+  position: fixed;
+  left: 50%;
+  transform: translate(-50%, 0);
+  &_tabs {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 0;
+    button {
+      margin-bottom: 0%;
+    }
+  }
+  &_page {
+    padding: 2%;
+    background-color: $secondary;
+    border-radius: 10px;
+  }
+}
+.active {
+  background-color: $secondary;
+  border-radius: 6px 6px 0 0;
+  &:hover {
+    box-shadow: 0;
+  }
+}
+

@@ -13,17 +13,7 @@
         </button>
       </div>
     </div>
-    <div class="comment_buttons">
-      <button class="likeDislike">
-        <font-awesome-icon icon="face-laugh" />
-      </button>
-      <p>({{ comment.likes }})</p>
-      <button class="likeDislike">
-        <font-awesome-icon icon="face-frown-open" />
-      </button>
-      <p>({{ comment.dislikes }})</p>
-    </div>
-    <div class="post_actionButton">
+    <div class="post_buttons">
       <button @click="openUpdatingComment()">Modifier</button>
       <button @click="deleteComment(comment)">Supprimer</button>
     </div>
@@ -68,32 +58,4 @@ export default {
 </script>
 
 <style lang='scss'>
-.post {
-  border: 1px solid darkblue;
-  padding: 2%;
-  margin: 2%;
-  &_buttons {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  &_actionButtons {
-    display: flex;
-  }
-}
-
-.likeDislike {
-  //border: none;
-  //background: none;
-  color: rgb(105, 174, 2);
-}
-
-.comment {
-  border: 1px solid rebeccapurple;
-  &_buttons {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-}
 </style>

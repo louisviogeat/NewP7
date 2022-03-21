@@ -1,13 +1,10 @@
 <template>
-  <div>
-    <button @click="openComment()">Commenter</button>
-    <div v-if="cardOpened" class="new-comment">
-      <div class="new-comment_item">
-        <p>Commentaire :</p>
-        <input v-model="text" type="text" />
-      </div>
-      <button @click="createComment">Répondre</button>
+  <div class="new-comment">
+    <div class="new-comment_item">
+      <p>Commentaire :</p>
+      <input v-model="text" type="text" />
     </div>
+    <button @click="createComment">Répondre</button>
   </div>
 </template>
 
@@ -19,7 +16,6 @@ export default {
   data() {
     return {
       text: "",
-      cardOpened: false,
     };
   },
   methods: {
@@ -32,28 +28,13 @@ export default {
       };
       HttpService.post(route, comment).then((res) => {
         console.log("comment ", res);
+        this.$forceUpdate();
       });
-    },
-    openComment() {
-      this.cardOpened = !this.cardOpened;
     },
   },
 };
 </script>
 
 <style lang="scss">
-.new-comment {
-  border: 2px solid green;
-  &_item {
-    width: 100%;
-    display: flex;
-    justify-content: space-around;
-    & :nth-child(1) {
-      flex: 1;
-    }
-    & :nth-child(2) {
-      flex: 3;
-    }
-  }
-}
+@import "../../main";
 </style>
