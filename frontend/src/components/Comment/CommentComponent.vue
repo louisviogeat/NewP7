@@ -1,9 +1,16 @@
 <template>
   <div>
-    <p>Commenté par {{ comment.user.firstName }} {{ comment.user.lastName }}</p>
-    <h3>{{ comment.text }}</h3>
+    <div class="post_header">
+      <p>
+        Commenté par {{ comment.user.firstName }} {{ comment.user.lastName }}
+        {{ formattedDate }}
+      </p>
+      <p v-if="formattedUpdatedDate">Modifié {{ formattedUpdatedDate }}</p>
+      <h3>{{ comment.text }}</h3>
+    </div>
+
     <div v-if="updatingComment">
-      <input v-model="newtext" type="text" />
+      <input v-model="text" type="text" />
       <div>
         <button @click="updateComment(comment)">
           Confirmer la modification
@@ -13,7 +20,7 @@
         </button>
       </div>
     </div>
-    <div class="post_buttons">
+    <div class="post_buttons" v-if="user.id === comment.userId">
       <button @click="openUpdatingComment()">Modifier</button>
       <button @click="deleteComment(comment)">Supprimer</button>
     </div>
@@ -22,13 +29,28 @@
 
 <script>
 import HttpService from "../../services/httpService";
+import MomentService from "../../services/momentService";
+
 export default {
   name: "CommentComponent",
-  props: { comment: Object },
+  props: { comment: Object, user: Object },
   data() {
     return {
       updatingComment: false,
+      formattedDate: "",
+      formattedUpdatedDate: "",
+      text: "",
     };
+  },
+  mounted() {
+    MomentService.dateFromNow(this.comment.createdAt).then((date) => {
+      this.formattedDate = date;
+    });
+    if (this.comment.createdAt !== this.comment.updatedAt) {
+      MomentService.dateFromNow(this.comment.updatedAt).then((date) => {
+        this.formattedUpdatedDate = date;
+      });
+    }
   },
   methods: {
     openUpdatingComment() {
@@ -38,20 +60,26 @@ export default {
       this.updatingComment = !this.updatingComment;
     },
     updateComment(comment) {
-      const route = "post/" + comment.postId + "/comment/" + comment.id;
+      const route = "/comment/" + comment.id;
+      console.log("newtext", this.text);
       const body = {
-        text: this.newText,
-        file: comment.file,
-        creatorId: comment.userId,
+        text: this.text,
       };
       console.log("a", body);
       HttpService.put(route, body).then(() => {
         this.updatingComment = false;
-        alert("Commentaire modifié");
+        this.$emit("postUpdated", true);
       });
     },
     deleteComment(comment) {
-      console.log(comment);
+      const route = "comment/" + comment.id;
+      HttpService.delete(route)
+        .then(() => {
+          this.$emit("postUpdated", true);
+        })
+        .catch((err) => {
+          console.log("berr", err);
+        });
     },
   },
 };

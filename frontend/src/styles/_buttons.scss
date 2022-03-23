@@ -6,8 +6,6 @@ button {
   border: none;
   padding: 2%;
   margin: 1%;
-  background-color: $primary;
-  color: #fff;
   font-size: 18px;
   border-radius: 6px;
   outline: none;
@@ -15,9 +13,19 @@ button {
   transition: 0.3s linear;
   &:hover {
     transform: rotateX(15deg);
-    box-shadow: 0 15px 15px $primary-light;
+    box-shadow: 0 15px 15px $tertiary;
   }
 
+}
+
+.success {
+  background-color: $success;
+  color: black;
+}
+
+.danger {
+  background-color: $danger;
+  color: #fff;
 }
 
   .btn-extend {

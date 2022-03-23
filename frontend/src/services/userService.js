@@ -11,14 +11,18 @@ class UserService {
             headers: { "Content-type": "application/json; charset=UTF-8" },
         })
             .then((res) => {
-                if (res.ok) {
+                console.log('a', res);
+                if (res.ok === true) {
                     return res.json();
                 }
             })
             .then((res) => {
+                console.log('b', res);
                 localStorage.setItem("currentUserId", JSON.stringify(res.userId));
                 localStorage.setItem("token", JSON.stringify(res.token));
                 return res.userId;
+            }).catch(() => {
+                alert('Mauvais identifiants de connexion');
             });
     }
 
@@ -31,19 +35,20 @@ class UserService {
         })
             .then((res) => {
                 if (res.ok) {
+                    console.log('quand a');
                     return res.json();
+
                 }
             })
-            .then((user) => {
-                localStorage.setItem("currentUserId", JSON.stringify(user.id));
-                console.log('signup user', user);
-                return user;
-                /*
-                this.login(user.email, user.password)
-                    .then((res) => {
-                        return res;
-                    });
-                */
+            .then((signUpRes) => {
+                console.log('quand b', signUpRes);
+                const object = {
+                    user: signUpRes,
+                    pass: user
+                };
+                localStorage.setItem("currentUserId", JSON.stringify(signUpRes.id));
+                return object;
+
             })
             .catch((err) => {
                 console.error(err);

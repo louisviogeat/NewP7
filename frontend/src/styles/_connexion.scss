@@ -1,6 +1,6 @@
 .connexion {
   margin-top: 10%;
-  width: 80%;
+  width: 60%;
   height: 500px;
   position: fixed;
   left: 50%;
@@ -15,12 +15,12 @@
   }
   &_page {
     padding: 2%;
-    background-color: $secondary;
+    background-color: lighten($color: $tertiary, $amount: 20%);
     border-radius: 10px;
   }
 }
 .active {
-  background-color: $secondary;
+  background-color: lighten($color: $tertiary, $amount: 20%);
   border-radius: 6px 6px 0 0;
   &:hover {
     box-shadow: 0;

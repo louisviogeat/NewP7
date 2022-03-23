@@ -1,7 +1,8 @@
 .post {
   padding: 2%;
   margin: 5%;
-  background-color: lighten($color: $bg, $amount: 5%);
+  background-color: lighten($color: $tertiary, $amount: 10%);
+  border-radius: 15px;
   &_header {
       display: flex;
       flex-direction: column;
@@ -29,9 +30,10 @@
 }
 
 .comment {
-    background-color: $bg;
+    background-color: $tertiary;
   margin: 2%;
   padding: 3%;
+  border-radius: 10px;
   &_buttons {
     display: flex;
     align-items: center;

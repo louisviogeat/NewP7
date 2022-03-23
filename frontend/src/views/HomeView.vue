@@ -1,7 +1,7 @@
 <template>
   <div v-if="!update">
     <div>
-      <button @click="openCreationPost()">Créer un post</button>
+      <button @click="openCreationPost()" class="success">Créer un post</button>
     </div>
     <div class="post" v-if="creationPost">
       <create-post @postUpdated="isUpdated"></create-post>
@@ -35,12 +35,12 @@ export default {
     };
   },
   mounted() {
-    this.displayAllPosts();
     const userId = JSON.parse(localStorage.getItem("currentUserId"));
-
     HttpService.get("user/" + userId).then((res) => {
+      console.log("user home", res);
       this.user = res;
     });
+    this.displayAllPosts();
   },
   methods: {
     isUpdated(payload) {
@@ -51,9 +51,6 @@ export default {
         this.$router.push({ name: "home" });
       }, 300);
       //this.$router.push({ name: "home" });
-    },
-    loggy() {
-      console.log(this.posts);
     },
     displayAllPosts() {
       HttpService.get("posts").then((res) => {

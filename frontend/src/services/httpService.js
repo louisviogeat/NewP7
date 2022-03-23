@@ -63,25 +63,19 @@ class HttpService {
 
     }
 
-    async delete(route, body) {
+    async delete(route) {
         const token = JSON.parse(localStorage.getItem("token"));
-        return this.get('user/' + this.currentUserId).then((user) => {
-            console.log('hoo', user);
-            body.isAdmin = user.isAdmin;
-            body.userConnected = user.id;
-            return fetch(this.apiUrl + route, {
-                method: "DELETE",
-                body: JSON.stringify(body),
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-type": "application/json; charset=UTF-8",
-                },
-            }).then((res) => {
-                if (res.ok) {
-                    return res.json();
-                }
-            }).catch((err) => this.handleError(err));
-        });
+        return fetch(this.apiUrl + route, {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-type": "application/json; charset=UTF-8",
+            },
+        }).then((res) => {
+            if (res.ok) {
+                return res.json();
+            }
+        }).catch((err) => this.handleError(err));
     }
 
 }

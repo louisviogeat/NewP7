@@ -6,9 +6,9 @@
     </div>
     <div class="form_item">
       <label>Mot de passe </label>
-      <input v-model="password" />
+      <input type="password" v-model="password" />
     </div>
-    <button @click="login()">Connexion</button>
+    <button @click="login()" class="success">Connexion</button>
   </div>
 </template>
 
@@ -26,6 +26,7 @@ export default {
     login() {
       UserService.login(this.email, this.password)
         .then((res) => {
+          console.log("aa", res);
           this.$emit("logged", res);
         })
         .catch((err) => {

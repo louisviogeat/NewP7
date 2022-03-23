@@ -4,7 +4,7 @@
       <p>Titre</p>
       <input v-model="text" type="text" />
     </div>
-    <button @click="createPost">Créer</button>
+    <button @click="createPost" class="success">Créer</button>
   </div>
 </template>
 
@@ -27,7 +27,7 @@ export default {
 
       HttpService.post(route, post).then(() => {
         console.log("ici");
-        this.$router.go();
+        this.$emit("postUpdated", true);
       });
     },
   },

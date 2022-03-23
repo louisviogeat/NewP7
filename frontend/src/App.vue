@@ -1,17 +1,21 @@
 <template>
-  <div>
+  <div class="all">
     <header v-if="user">
       <div class="userBar">
         <div class="userBar_profile">
           <img v-if="!user.profilePicture" src="./assets/profil.png" alt="" />
           <img v-if="user.profilePicture" :src="user.profilePicture" alt="" />
-          <p>{{ user.firstName }} {{ user.lastName }}</p>
+          <h1>{{ user.firstName }} {{ user.lastName }}</h1>
         </div>
 
-        <button @click="goToAdministrationPage()" v-if="user.isAdmin">
+        <button
+          @click="goToAdministrationPage()"
+          v-if="user.isAdmin"
+          class="success"
+        >
           Administration
         </button>
-        <button @click="deconnexion()">Déconnexion</button>
+        <button @click="deconnexion()" class="danger">Déconnexion</button>
       </div>
     </header>
     <router-view v-if="user" />
@@ -56,16 +60,26 @@ body {
   background-color: $bg;
 }
 
+.all {
+  //background-image: url("./assets/background.jpeg");
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: white;
+  //background-image: url("./assets/background.jpeg");
 }
 
 header {
-  border: 2px solid darkslategrey;
+  background-color: #ffe66d;
+  box-shadow: 0px 1px 10px 1px #ffe66d;
+  margin-bottom: 5%;
+  h1 {
+    color: black;
+  }
   .userBar {
     display: flex;
     align-items: center;
@@ -74,6 +88,7 @@ header {
 
     &_profile {
       display: flex;
+      align-items: center;
     }
     &_admin {
       display: flex;

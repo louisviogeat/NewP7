@@ -17,7 +17,7 @@
       <input v-model="password" type="password" />
     </div>
 
-    <button @click="signup()">S'inscrire</button>
+    <button @click="signup()" class="success">S'inscrire</button>
   </div>
 </template>
 
@@ -44,7 +44,10 @@ export default {
       };
       console.log(user);
       UserService.signup(user).then((res) => {
-        this.$emit("logged", res.id);
+        UserService.login(res.user.email, res.pass.password).then((res) => {
+          this.$emit("logged", res);
+        });
+        console.log("b", res);
       });
     },
   },

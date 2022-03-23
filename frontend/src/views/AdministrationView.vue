@@ -1,7 +1,6 @@
 <template>
   <div>
     <h1>Liste des utilisateurs</h1>
-    <button @click="getAllUser()">Ouvrir la liste</button>
     <table v-if="users">
       <thead>
         <tr>
@@ -20,7 +19,9 @@
           <td>{{ user.lastName }}</td>
           <td>{{ user.email }}</td>
           <td>{{ user.isAdmin }}</td>
-          <td><button @click="deleteUser(user)">Supprimer</button></td>
+          <td>
+            <button @click="deleteUser(user)" class="danger">Supprimer</button>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -35,6 +36,9 @@ export default {
     return {
       users: [],
     };
+  },
+  mounted() {
+    this.getAllUser();
   },
   methods: {
     getAllUser() {
@@ -51,6 +55,10 @@ export default {
       HttpService.delete(route, body)
         .then((res) => {
           console.log("delete user res", res);
+          this.$router.push({ name: "reload" });
+          setTimeout(() => {
+            this.$router.push({ name: "administration" });
+          }, 300);
         })
         .catch((err) => {
           console.log("delete user err", err);
@@ -69,6 +77,12 @@ table {
   th {
     background-color: #42b983;
     color: rgba(255, 255, 255, 0.66);
+  }
+  tbody {
+    background-color: #42b983;
+  }
+  td {
+    color: black;
   }
 }
 </style>

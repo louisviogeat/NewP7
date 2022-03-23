@@ -5,16 +5,21 @@
         Publié par {{ post.user.firstName }} {{ post.user.lastName }}
         {{ formattedDate }}
       </p>
+      <p v-if="formattedUpdatedDate">Modifié {{ formattedUpdatedDate }}</p>
       <h2>{{ post.text }}</h2>
     </div>
 
     <div>
-      <input v-if="updatingPost" v-model="newtext" type="text" />
+      <input v-if="updatingPost" v-model="text" type="text" />
       <div>
-        <button v-if="updatingPost" @click="updatePost(post)">
+        <button v-if="updatingPost" class="success" @click="updatePost(post)">
           Confirmer la modification
         </button>
-        <button v-if="updatingPost" @click="cancelUpdatingPost(post)">
+        <button
+          v-if="updatingPost"
+          class="danger"
+          @click="cancelUpdatingPost(post)"
+        >
           Annuler la modification
         </button>
       </div>
@@ -22,22 +27,30 @@
 
     <div class="post_buttons">
       <div class="post_buttons_like">
-        <button class="likeDislike" @click="like(post.id)">
+        <button class="likeDislike danger" @click="like(post.id)">
           <font-awesome-icon icon="face-laugh" />
         </button>
         <p>({{ post.likes }})</p>
       </div>
       <div class="post_buttons_like">
-        <button class="likeDislike">
+        <button class="likeDislike danger" @click="dislike(post.id)">
           <font-awesome-icon icon="face-frown-open" />
         </button>
         <p>({{ post.dislikes }})</p>
       </div>
-      <button @click="openComment()">Commenter</button>
-      <button v-if="user.id === post.userId" @click="openUpdatingPost()">
+      <button @click="openComment()" class="success">Commenter</button>
+      <button
+        v-if="user.id === post.userId"
+        class="success"
+        @click="openUpdatingPost()"
+      >
         Modifier
       </button>
-      <button v-if="user.id === post.userId" @click="deletePost(post)">
+      <button
+        v-if="user.id === post.userId"
+        class="danger"
+        @click="deletePost(post)"
+      >
         Supprimer
       </button>
     </div>
@@ -48,7 +61,11 @@
     <div class="post_actionButton"></div>
 
     <div v-for="comment in post.comments" :key="comment.id" class="comment">
-      <comment-component :comment="comment"></comment-component>
+      <comment-component
+        :comment="comment"
+        :user="user"
+        @postUpdated="isUpdated"
+      ></comment-component>
     </div>
   </div>
 </template>
@@ -57,8 +74,7 @@
 import HttpService from "../../services/httpService";
 import CreateComment from "../Comment/CreateComment.vue";
 import CommentComponent from "../Comment/CommentComponent.vue";
-//import CreatePost from "../components/Post/CreatePost.vue";
-import moment from "moment";
+import MomentService from "../../services/momentService";
 
 export default {
   components: { CreateComment, CommentComponent },
@@ -70,42 +86,27 @@ export default {
       creationPost: false,
       updatingPost: false,
       commentPost: false,
-      newText: "",
+      text: "",
       userId: "",
       formattedDate: "",
+      formattedUpdatedDate: "",
     };
   },
   mounted() {
     this.userId = JSON.parse(localStorage.getItem("currentUserId"));
-    console.log(this.userId);
-    console.log(this.post);
-    const date = new Date(this.post.createdAt).getTime();
-    console.log(date.time);
-    moment.updateLocale("en", {
-      relativeTime: {
-        future: "dans% s",
-        past: "il y a% s",
-        s: "quelques secondes",
-        m: "une minute",
-        mm: "% d minutes",
-        h: "une heure",
-        hh: "% d heures",
-        d: "un jour",
-        dd: "% d jours",
-        M: "un mois",
-        MM: "% d mois",
-        y: "un an",
-        aa: "% d ans",
-      },
+    MomentService.dateFromNow(this.post.createdAt).then((date) => {
+      this.formattedDate = date;
     });
-    console.log(date);
-    moment.locale("fr");
-    console.log(Date.now());
-    console.log(moment(Date.now()).fromNow());
-    console.log(moment(date).fromNow());
-    this.formattedDate = moment(date).fromNow();
+    if (this.post.createdAt !== this.post.updatedAt) {
+      MomentService.dateFromNow(this.post.updatedAt).then((date) => {
+        this.formattedUpdatedDate = date;
+      });
+    }
   },
   methods: {
+    isUpdated(payload) {
+      this.$emit("postUpdated", payload);
+    },
     openCreationPost() {
       this.creationPost = !this.creationPost;
     },
@@ -130,20 +131,32 @@ export default {
           console.log("errooooor", err);
         });
     },
+    dislike(postId) {
+      const route = "post/" + postId + "/dislike";
+      const body = {
+        userId: this.userId,
+        dislike: 1,
+      };
+      HttpService.post(route, body)
+        .then(() => {
+          this.$emit("postUpdated", true);
+        })
+        .catch((err) => {
+          console.log("errooooor", err);
+        });
+    },
     updatePost(post) {
       console.log(post);
       const route = "post/" + post.id;
       const body = {
-        text: this.newText,
+        text: this.text,
         file: post.file,
         creatorId: post.userId,
       };
       console.log("a", body);
       HttpService.put(route, body).then(() => {
-        this.updatingPost = false;
-        this.componentKey += 1;
         this.$emit("postUpdated", true);
-        alert("Post modifié");
+        //alert("Post modifié");
       });
     },
 
@@ -154,13 +167,9 @@ export default {
     deletePost(post) {
       console.log(post);
       const route = "post/" + post.id;
-      const body = {
-        creatorId: post.userId,
-      };
-      console.log("a", body);
-      HttpService.delete(route, body)
+
+      HttpService.delete(route)
         .then(() => {
-          alert("Post supprimé");
           this.$emit("postUpdated", true);
         })
         .catch((err) => {
