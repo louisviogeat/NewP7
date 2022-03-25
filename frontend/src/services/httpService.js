@@ -25,6 +25,7 @@ class HttpService {
 
     async post(route, body) {
         const token = JSON.parse(localStorage.getItem("token"));
+        console.log('ici', body);
         return fetch(this.apiUrl + route, {
             method: "POST",
             body: JSON.stringify(body),

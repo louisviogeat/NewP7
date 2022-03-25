@@ -7,6 +7,7 @@
       </p>
       <p v-if="formattedUpdatedDate">Modifié {{ formattedUpdatedDate }}</p>
       <h2>{{ post.text }}</h2>
+      <img v-if="post.file" :src="post.file" alt="file" />
     </div>
 
     <div>
@@ -55,7 +56,10 @@
       </button>
     </div>
     <div v-if="commentPost">
-      <create-comment :postId="post.id"></create-comment>
+      <create-comment
+        :postId="post.id"
+        @postUpdated="isUpdated"
+      ></create-comment>
     </div>
 
     <div class="post_actionButton"></div>

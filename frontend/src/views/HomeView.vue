@@ -49,7 +49,7 @@ export default {
       this.$router.push({ name: "reload" });
       setTimeout(() => {
         this.$router.push({ name: "home" });
-      }, 300);
+      }, 1000);
       //this.$router.push({ name: "home" });
     },
     displayAllPosts() {

@@ -4,7 +4,7 @@
       <p>Commentaire :</p>
       <input v-model="text" type="text" />
     </div>
-    <button @click="createComment">Répondre</button>
+    <button @click="createComment" class="success">Répondre</button>
   </div>
 </template>
 
@@ -26,9 +26,8 @@ export default {
         text: this.text,
         file: "",
       };
-      HttpService.post(route, comment).then((res) => {
-        console.log("comment ", res);
-        this.$forceUpdate();
+      HttpService.post(route, comment).then(() => {
+        this.$emit("postUpdated", true);
       });
     },
   },

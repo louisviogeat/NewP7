@@ -12,17 +12,17 @@
     <div v-if="updatingComment">
       <input v-model="text" type="text" />
       <div>
-        <button @click="updateComment(comment)">
+        <button @click="updateComment(comment)" class="success">
           Confirmer la modification
         </button>
-        <button @click="cancelUpdatingComment()">
+        <button @click="cancelUpdatingComment()" class="danger">
           Annuler la modification
         </button>
       </div>
     </div>
     <div class="post_buttons" v-if="user.id === comment.userId">
-      <button @click="openUpdatingComment()">Modifier</button>
-      <button @click="deleteComment(comment)">Supprimer</button>
+      <button @click="openUpdatingComment()" class="success">Modifier</button>
+      <button @click="deleteComment(comment)" class="danger">Supprimer</button>
     </div>
   </div>
 </template>

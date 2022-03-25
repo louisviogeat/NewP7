@@ -1,6 +1,10 @@
 <template>
   <div>
     <div class="connexion">
+      <img
+        src="../assets/groupomania_Logos/icon-left-font-monochrome-white.svg"
+        alt=""
+      />
       <div class="connexion_tabs">
         <button id="btnSignIn" @click="openTab('sign-in')">Déjà inscrit</button>
         <button class="extend" id="btnSignUp" @click="openTab('sign-up')">
