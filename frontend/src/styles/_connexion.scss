@@ -5,6 +5,9 @@
   position: fixed;
   left: 50%;
   transform: translate(-50%, 0);
+  img {
+    width: 250px;
+  }
   &_tabs {
     display: flex;
     justify-content: space-around;
@@ -24,6 +27,12 @@
   border-radius: 6px 6px 0 0;
   &:hover {
     box-shadow: 0;
+  }
+}
+
+@media screen and (max-width: 680px) {
+  .connexion {
+    width: 80%;
   }
 }
 

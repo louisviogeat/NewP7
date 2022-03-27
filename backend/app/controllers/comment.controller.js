@@ -28,7 +28,7 @@ exports.createComment = (req, res) => {
                 message:
                     err.message || "Some error occurred while creating the Comment."
             });
-            console.log(">> Error while creating comment: ", err);
+            console.error(">> Error while creating comment: ", err);
         });
 };
 
@@ -64,7 +64,7 @@ exports.findCommentById = (req, res) => {
             res.status(500).send({
                 message: "Error retrieving Post with id=" + id
             });
-            console.log(">> Error while finding post: ", err);
+            console.error(">> Error while finding post: ", err);
         });
 };
 

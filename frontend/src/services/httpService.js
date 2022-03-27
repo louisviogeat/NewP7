@@ -4,7 +4,7 @@ class HttpService {
     currentUserId = localStorage.getItem('currentUserId');
 
     async handleError(error) {
-        console.log('handleError', error);
+        console.error('handleError', error);
     }
 
     async get(route) {
@@ -25,7 +25,6 @@ class HttpService {
 
     async post(route, body) {
         const token = JSON.parse(localStorage.getItem("token"));
-        console.log('ici', body);
         return fetch(this.apiUrl + route, {
             method: "POST",
             body: JSON.stringify(body),
@@ -46,7 +45,6 @@ class HttpService {
         this.get('user/' + this.currentUserId).then((user) => {
             body.isAdmin = user.isAdmin;
             body.userConnected = user.id;
-            console.log('b', body);
             return fetch(this.apiUrl + route, {
                 method: "PUT",
                 body: JSON.stringify(body),

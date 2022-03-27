@@ -40,7 +40,6 @@ export default {
       };
 
       HttpService.post(route, post).then(() => {
-        console.log("ici");
         this.$emit("postUpdated", true);
       });
     },
@@ -72,12 +71,5 @@ export default {
   & p {
     padding: 5px;
   }
-}
-
-img {
-  width: 30%;
-  margin: auto;
-  display: block;
-  margin-bottom: 10px;
 }
 </style>

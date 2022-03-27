@@ -37,20 +37,16 @@ export default {
   mounted() {
     const userId = JSON.parse(localStorage.getItem("currentUserId"));
     HttpService.get("user/" + userId).then((res) => {
-      console.log("user home", res);
       this.user = res;
     });
     this.displayAllPosts();
   },
   methods: {
-    isUpdated(payload) {
-      //this.update = payload;
-      console.log(payload);
+    isUpdated() {
       this.$router.push({ name: "reload" });
       setTimeout(() => {
         this.$router.push({ name: "home" });
       }, 1000);
-      //this.$router.push({ name: "home" });
     },
     displayAllPosts() {
       HttpService.get("posts").then((res) => {

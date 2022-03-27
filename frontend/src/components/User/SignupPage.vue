@@ -42,12 +42,10 @@ export default {
         password: this.password,
         isAdmin: "false",
       };
-      console.log(user);
       UserService.signup(user).then((res) => {
         UserService.login(res.user.email, res.pass.password).then((res) => {
           this.$emit("logged", res);
         });
-        console.log("b", res);
       });
     },
   },

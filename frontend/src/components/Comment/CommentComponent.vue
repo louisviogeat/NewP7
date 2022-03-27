@@ -61,11 +61,9 @@ export default {
     },
     updateComment(comment) {
       const route = "/comment/" + comment.id;
-      console.log("newtext", this.text);
       const body = {
         text: this.text,
       };
-      console.log("a", body);
       HttpService.put(route, body).then(() => {
         this.updatingComment = false;
         this.$emit("postUpdated", true);
@@ -78,7 +76,7 @@ export default {
           this.$emit("postUpdated", true);
         })
         .catch((err) => {
-          console.log("berr", err);
+          console.error("Error delete", err);
         });
     },
   },

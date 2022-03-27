@@ -12,7 +12,6 @@ exports.likePost = (req, res, next) => {
             postId: postId
         }
     }).then((like) => {
-        console.log(like);
         if (like === null) {
             LikeOrDislike.create({
                 userId: userId,

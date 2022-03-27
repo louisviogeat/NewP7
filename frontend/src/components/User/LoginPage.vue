@@ -26,11 +26,10 @@ export default {
     login() {
       UserService.login(this.email, this.password)
         .then((res) => {
-          console.log("aa", res);
           this.$emit("logged", res);
         })
         .catch((err) => {
-          console.log(err);
+          console.error("login error", err);
         });
     },
   },

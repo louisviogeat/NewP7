@@ -12,7 +12,6 @@ exports.createPost = (req, res) => {
         return
     }
     let file = '';
-    console.log(req.body);
     if (req.body.file) {
         base64Img.img(req.body.file, '../files', Date.now(), (err, filepath) => {
             const pathArr = filepath.split('/')
@@ -39,7 +38,7 @@ exports.createPost = (req, res) => {
                 message:
                     err.message || "Some error occurred while creating the Tutorial."
             });
-            console.log(">> Error while creating post: ", err);
+            console.error(">> Error while creating post: ", err);
         });
 };
 
@@ -75,7 +74,7 @@ exports.findPostById = (req, res) => {
             res.status(500).send({
                 message: "Error retrieving Post with id=" + id
             });
-            console.log(">> Error while finding post: ", err);
+            console.error(">> Error while finding post: ", err);
         });
 };
 

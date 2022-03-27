@@ -47,7 +47,6 @@ export default {
   },
   methods: {
     openTab(tabName) {
-      console.log(tabName);
       const signUp = document.getElementById("sign-up");
       const signIn = document.getElementById("sign-in");
       const btnSignUp = document.getElementById("btnSignUp");
@@ -72,7 +71,6 @@ export default {
     isLogged(payload) {
       const route = "user/" + payload;
       HttpService.get(route).then((res) => {
-        console.log(res);
         this.$router.push({ name: "home" });
         this.$emit("authenticated", res);
       });

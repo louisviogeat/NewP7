@@ -27,7 +27,7 @@ exports.signup = (req, res) => {
                     message:
                         err.message || "Some error occurred while creating the User."
                 });
-                console.log(">> Error while creating user: ", err);
+                console.error(">> Error while creating user: ", err);
             });
         })
         .catch(error => res.status(500).json({ error }));
@@ -91,7 +91,7 @@ exports.findUserById = (req, res) => {
             res.status(500).send({
                 message: "Error retrieving User with id=" + id
             });
-            console.log(">> Error while finding user: ", err);
+            console.error(">> Error while finding user: ", err);
         });
 };
 

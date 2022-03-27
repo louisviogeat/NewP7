@@ -47,21 +47,19 @@ export default {
       });
     },
     deleteUser(user) {
-      console.log(user);
       const route = "user/" + user.id;
       const body = {
         isAdmin: user.isAdmin,
       };
       HttpService.delete(route, body)
-        .then((res) => {
-          console.log("delete user res", res);
+        .then(() => {
           this.$router.push({ name: "reload" });
           setTimeout(() => {
             this.$router.push({ name: "administration" });
           }, 300);
         })
         .catch((err) => {
-          console.log("delete user err", err);
+          console.error("delete user err", err);
         });
     },
   },
