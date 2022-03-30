@@ -4,18 +4,6 @@
       <p>Titre</p>
       <input v-model="text" type="text" />
     </div>
-    <div class="post-creation" v-if="!file">
-      <p>Fichier</p>
-      <input
-        @change="onFileChange"
-        type="file"
-        accept="image/x-png,image/gif,image/jpeg"
-      />
-    </div>
-    <div class="post-creation" v-else>
-      <img :src="file" />
-      <button @click="removeImage">Supprimer le fichier</button>
-    </div>
     <button @click="createPost" class="success">Créer</button>
   </div>
 </template>
@@ -27,7 +15,6 @@ export default {
   data() {
     return {
       text: "",
-      file: "",
     };
   },
   methods: {
@@ -36,28 +23,11 @@ export default {
       const route = "user/" + userId + "/post";
       const post = {
         text: this.text,
-        file: this.file,
       };
 
       HttpService.post(route, post).then(() => {
         this.$emit("postUpdated", true);
       });
-    },
-    onFileChange(e) {
-      var files = e.target.files || e.dataTransfer.files;
-      if (!files.length) return;
-      this.createImage(files[0]);
-    },
-    createImage(file) {
-      var reader = new FileReader();
-
-      reader.onload = (e) => {
-        this.file = e.target.result;
-      };
-      reader.readAsDataURL(file);
-    },
-    removeImage() {
-      this.file = "";
     },
   },
 };

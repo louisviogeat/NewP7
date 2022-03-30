@@ -45,10 +45,6 @@ db.likesOrDislikes.belongsTo(db.posts, {
     foreignKey: "postId",
     as: "post"
 });
-db.comments.hasMany(db.likesOrDislikes, { as: "likesOrDislikes" });
-db.likesOrDislikes.belongsTo(db.comments, {
-    foreignKey: "commentId",
-    as: "comment"
-});
+
 
 module.exports = db;

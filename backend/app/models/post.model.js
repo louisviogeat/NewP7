@@ -12,18 +12,6 @@ module.exports = (sequelize, DataTypes) => {
         file: {
             type: DataTypes.STRING
         },
-        likes: {
-            type: DataTypes.INTEGER
-        },
-        dislikes: {
-            type: DataTypes.INTEGER
-        },
-        usersLiked: {
-            type: DataTypes.JSON
-        },
-        usersDisliked: {
-            type: DataTypes.JSON
-        }
     });
     return Post;
 };

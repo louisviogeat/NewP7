@@ -1,6 +1,5 @@
 class HttpService {
     apiUrl = "http://localhost:3000/api/";
-    //token = JSON.parse(localStorage.getItem("token"));
     currentUserId = localStorage.getItem('currentUserId');
 
     async handleError(error) {
@@ -58,8 +57,6 @@ class HttpService {
                 }
             }).catch((err) => this.handleError(err));
         })
-        // send isAdmin, userConnected and creatorId (for post)
-
     }
 
     async delete(route) {

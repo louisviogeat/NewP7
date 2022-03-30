@@ -17,20 +17,17 @@ exports.signup = (req, res) => {
                 lastName: req.body.lastName,
                 email: req.body.email,
                 password: hash,
-                profilePicture: req.body.profilePicture,
                 isAdmin: req.body.isAdmin
             }).then((user) => {
                 res.status(201).send(user);
                 return user;
             }).catch((err) => {
                 res.status(500).send({
-                    message:
-                        err.message || "Some error occurred while creating the User."
+                    message: `Erreur lors de l'inscription de l'utilisateur : ${err}.`
                 });
-                console.error(">> Error while creating user: ", err);
             });
         })
-        .catch(error => res.status(500).json({ error }));
+        .catch(error => res.status(500).json({ message: `Erreur lors de l'inscription de l'utilisateur : ${err}.` }));
 };
 
 exports.login = (req, res) => {
@@ -53,10 +50,10 @@ exports.login = (req, res) => {
                         )
                     });
                 })
-                .catch(error => res.status(500).json({ message: 'Identifiants incorrects' }));
+                .catch(error => res.status(500).json({ message: `Erreur lors de la connexion de l'utilisateur : ${error}.` }));
         })
         .catch(error => {
-            res.status(500).json({ message: 'Identifiants incorrects' })
+            res.status(500).json({ message: `Erreur lors de la connexion de l'utilisateur : ${error}.` })
         })
 }
 
@@ -68,12 +65,11 @@ exports.findAll = (req, res) => {
         return users;
     }).catch(err => {
         res.status(500).send({
-            message:
-                err.message || "Some error occurred while retrieving users."
+            message: `Erreur lors de la recherche de tous les utilisateurs : ${err}.`
         });
     });
 };
-// Find a single Tutorial with an id
+
 exports.findUserById = (req, res) => {
     const id = req.params.id;
     return User.findByPk(id, { include: ["posts", "comments"] })
@@ -83,26 +79,25 @@ exports.findUserById = (req, res) => {
                 return user;
             } else {
                 res.status(404).send({
-                    message: `Cannot find user with id=${id}.`
+                    message: `Utilisateur n°${id} non trouvé.`
                 });
             }
         })
         .catch((err) => {
             res.status(500).send({
-                message: "Error retrieving User with id=" + id
+                message: `Erreur lors de la recherche l'utilisateur : ${error}.`
             });
-            console.error(">> Error while finding user: ", err);
         });
 };
 
 exports.deleteUser = (req, res) => {
     if (!req.auth.isAdmin) {
-        res.status(401).json({ message: 'Only admin are authorized to delete user' });
+        res.status(401).json({ message: 'Seul un profil admin peut supprimer un utilisateur' });
         return;
     }
     User.destroy({
         where: { id: req.params.id }
-    }).then(() => res.status(200).json({ message: 'User supprimé' }
+    }).then(() => res.status(200).json({ message: 'Utilisateur supprimé' }
     )).catch(() => res.status(400).json({ message: 'Suppression non autorisée' }));
 
 }

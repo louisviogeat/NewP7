@@ -14,10 +14,6 @@ exports.createComment = (req, res) => {
         file: req.body.file,
         userId: req.params.userId,
         postId: req.params.postId,
-        likes: 0,
-        dislikes: 0,
-        usersLiked: [],
-        usersDisliked: []
     })
         .then((comment) => {
             res.status(201).send(comment);
@@ -56,15 +52,14 @@ exports.findCommentById = (req, res) => {
                 return comment;
             } else {
                 res.status(404).send({
-                    message: `Cannot find post with id=${id}.`
+                    message: `Commentaire n°${id} non trouvé.`
                 });
             }
         })
         .catch((err) => {
             res.status(500).send({
-                message: "Error retrieving Post with id=" + id
+                message: `Erreur lors de la recherche de commentaire : ${err}.`
             });
-            console.error(">> Error while finding post: ", err);
         });
 };
 
@@ -79,7 +74,9 @@ exports.updateComment = (req, res) => {
         where: { id: req.params.commentId },
     }
     ).then(() => res.status(200).json({ message: 'Commentaire modifié' })
-    ).catch(error => res.status(400).json({ message: "Erreur modification commentaire", error }));
+    ).catch(error => res.status(400).json({
+        message: `Erreur lors de la modification du commentaire : ${error}.`
+    }));
 };
 
 exports.delete = (req, res) => {
@@ -92,7 +89,7 @@ exports.delete = (req, res) => {
     Comment.destroy({
         where: { id: req.params.commentId }
     }).then(() => res.status(200).json({ message: 'Commentaire supprimé' }))
-        .catch(error => res.status(400).json({ error }));
+        .catch(error => res.status(400).json({ message: `Erreur lors de la suppression du commentaire : ${error}.` }));
 }
 
 
