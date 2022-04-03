@@ -19,10 +19,8 @@ exports.createPost = (req, res) => {
         })
         //file = `${req.protocol}://${req.get('host')}/files/${req.file.filename}`
     };
-
     return Post.create({
         text: req.body.text,
-        file: file,
         userId: req.params.id,
     })
         .then((post) => {

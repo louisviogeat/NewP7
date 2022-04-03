@@ -3,7 +3,6 @@ const router = express.Router();
 const userAuth = require('../middleware/user-auth');
 const postAuth = require('../middleware/post-auth');
 
-
 const postCtrl = require('../controllers/post.controller');
 const likeCtrl = require('../controllers/likeOrDislike.controller');
 

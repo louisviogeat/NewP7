@@ -46,7 +46,7 @@ export default {
       this.$router.push({ name: "reload" });
       setTimeout(() => {
         this.$router.push({ name: "home" });
-      }, 1000);
+      }, 2000);
     },
     displayAllPosts() {
       HttpService.get("posts").then((res) => {

@@ -22,6 +22,24 @@ class HttpService {
             }).catch((err) => this.handleError(err));
     }
 
+    async postFile(route, body) {
+        const token = JSON.parse(localStorage.getItem("token"));
+        console.log(route);
+        console.log(body);
+        return fetch(this.apiUrl + route, {
+            method: "POST",
+            body: JSON.stringify(body),
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-type": "application/json; charset=UTF-8; multipart/form-data",
+            },
+        })
+            .then((res) => {
+                if (res.ok) {
+                    return res.json();
+                }
+            }).catch((err) => this.handleError(err));
+    }
     async post(route, body) {
         const token = JSON.parse(localStorage.getItem("token"));
         return fetch(this.apiUrl + route, {

@@ -1,4 +1,6 @@
 const db = require("../models");
+const { sequelize } = require("../models");
+
 const Comment = db.comments;
 
 

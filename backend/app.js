@@ -21,7 +21,7 @@ app.use((req, res, next) => {
 });
 
 app.get('/', (req, res) => {
-    res.json({ message: 'bienvenue gros' });
+    res.json({ message: 'bienvenue' });
 });
 
 

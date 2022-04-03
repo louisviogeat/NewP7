@@ -65,7 +65,7 @@ export default {
         text: this.text,
       };
       HttpService.put(route, body).then(() => {
-        this.updatingComment = false;
+        //this.updatingComment = false;
         this.$emit("postUpdated", true);
       });
     },

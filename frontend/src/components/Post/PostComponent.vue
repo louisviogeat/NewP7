@@ -7,7 +7,6 @@
       </p>
       <p v-if="formattedUpdatedDate">Modifié {{ formattedUpdatedDate }}</p>
       <h2>{{ post.text }}</h2>
-      <img v-if="post.file" :src="post.file" alt="file" />
     </div>
 
     <div>
