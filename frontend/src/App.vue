@@ -17,14 +17,14 @@
         <div class="header-buttons">
           <button
             @click="goToAdministrationPage()"
-            v-if="user.isAdmin && $route.name !== 'administration'"
+            v-if="$route.name !== 'administration'"
             class="success"
           >
             Administration
           </button>
           <button
             @click="goToHomePage()"
-            v-if="user.isAdmin && $route.name === 'administration'"
+            v-if="$route.name === 'administration'"
             class="success"
           >
             Accueil
@@ -55,9 +55,6 @@ export default {
     };
   },
   methods: {
-    loggy() {
-      console.log(window.screen.width);
-    },
     isAuthenticated(payload) {
       this.user = payload;
     },

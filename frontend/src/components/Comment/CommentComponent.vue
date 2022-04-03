@@ -20,7 +20,10 @@
         </button>
       </div>
     </div>
-    <div class="post_buttons" v-if="user.id === comment.userId">
+    <div
+      class="post_buttons"
+      v-if="user.id === comment.userId || user.isAdmin === true"
+    >
       <button @click="openUpdatingComment()" class="success">Modifier</button>
       <button @click="deleteComment(comment)" class="danger">Supprimer</button>
     </div>

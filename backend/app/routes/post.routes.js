@@ -5,8 +5,12 @@ const postAuth = require('../middleware/post-auth');
 
 const postCtrl = require('../controllers/post.controller');
 const likeCtrl = require('../controllers/likeOrDislike.controller');
+const multer = require('../middleware/multer-config');
 
-router.post('/user/:id/post', userAuth, postCtrl.createPost);
+router.post('/upload', multer, (req, res) => {
+    res.json({ file: req.file })
+})
+router.post('/user/:id/post', multer, postCtrl.createPost);
 router.put('/post/:id', userAuth, postAuth, postCtrl.updatePost);
 router.delete('/post/:id', userAuth, postAuth, postCtrl.delete);
 router.get('/posts', userAuth, postCtrl.findAll);

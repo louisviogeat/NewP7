@@ -1,7 +1,7 @@
 <template>
   <div>
     <form
-      @submit.prevent="sendFile"
+      @submit.prevent="createPost"
       enctype="multipart/form-data"
       class="post-creation"
     >
@@ -9,57 +9,85 @@
         <label for="text">Titre</label>
         <input v-model="text" type="text" />
       </div>
+
+      <div
+        v-if="message"
+        :class="`message ${error ? 'is-danger' : 'is-success'}`"
+      >
+        <div class="message-body">{{ message }}</div>
+      </div>
       <div class="field">
-        <label for="file" class="label">Charger un fichier</label>
+        <label for="file" class="label">Upload File</label>
         <input type="file" ref="file" @change="selectFile" />
       </div>
       <div class="field">
-        <button class="button is-info">Send</button>
+        <button class="button success">Créer</button>
       </div>
     </form>
-    <button @click="createPost" class="success">Créer</button>
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import HttpService from "../../services/httpService";
+
 export default {
   name: "createPost",
   data() {
     return {
       text: "",
       file: "",
+      message: "",
+      error: false,
     };
   },
   methods: {
-    createPost() {
+    async createPost() {
       const userId = JSON.parse(localStorage.getItem("currentUserId"));
       const route = "user/" + userId + "/post";
-      const formData = new FormData();
-      formData.append("file", this.file);
-      const post = {
-        text: this.text,
-        file: formData,
-      };
+      if (this.file) {
+        const formData = new FormData();
+        formData.append("file", this.file);
 
-      HttpService.post(route, post).then(() => {
-        this.$emit("postUpdated", true);
-      });
+        try {
+          axios
+            .post("http://localhost:3000/api/upload", formData)
+            .then((res) => {
+              const fileObject = res.data.file;
+              const post = {
+                text: this.text,
+                file: fileObject.path,
+              };
+              HttpService.post(route, post).then(() => {
+                this.$emit("postUpdated", true);
+              });
+            });
+        } catch {
+          console.error("Erreur importation image");
+        }
+      } else {
+        const post = {
+          text: this.text,
+        };
+        HttpService.post(route, post).then(() => {
+          this.$emit("postUpdated", true);
+        });
+      }
     },
     selectFile() {
-      this.file = this.$refs.file.files[0];
-    },
-
-    async sendFile() {
-      console.log("a", this.file);
-      const formData = new FormData();
-      formData.append("file", this.file);
-      console.log("b", formData.get("file"));
-      try {
-        await axios.post("http://localhost:3000/api/upload", formData);
-      } catch (err) {
-        console.log(err);
+      const file = this.$refs.file.files[0];
+      const allowedTypes = ["image/jpeg", "image/png", "image//gif"];
+      const MAX_SIZE = 200000;
+      const toolarge = file.size > MAX_SIZE;
+      if (allowedTypes.includes(file.type)) {
+        this.file = file;
+        this.error = false;
+        this.message = "";
+      } else {
+        this.error = true;
+        this.message = toolarge
+          ? `Image trop lourde. La taille maximale est ${MAX_SIZE / 1000}Kb`
+          : "Seul les images sont autorisées";
       }
     },
   },
@@ -67,11 +95,14 @@ export default {
 </script>
 
 <style lang='scss'>
-.form {
+@import "../../main";
+form {
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  align-items: center;
-  & p {
+  align-items: space-around;
+  padding: 10px;
+  & .field {
     padding: 5px;
   }
 }

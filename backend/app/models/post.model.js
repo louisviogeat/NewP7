@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false
         },
         file: {
-            type: DataTypes.STRING
+            type: DataTypes.JSON
         },
     });
     return Post;

@@ -7,10 +7,16 @@
       </p>
       <p v-if="formattedUpdatedDate">Modifié {{ formattedUpdatedDate }}</p>
       <h2>{{ post.text }}</h2>
+      <img
+        v-if="post.file && !updatingPost"
+        :src="getImgUrl(post.file)"
+        alt=""
+      />
     </div>
 
     <div>
       <input v-if="updatingPost" v-model="text" type="text" />
+      <!--SimpleUpload @imageUpdated="imageUpdated" v-if="updatingPost" /-->
       <div>
         <button v-if="updatingPost" class="success" @click="updatePost(post)">
           Confirmer la modification
@@ -25,7 +31,7 @@
       </div>
     </div>
 
-    <div class="post_buttons">
+    <div class="post_buttons" v-if="!updatingPost">
       <div class="post_buttons_like">
         <button
           :style="[alreadyLiked ? { color: '#4ECDC4' } : { color: 'white' }]"
@@ -48,14 +54,14 @@
       </div>
       <button @click="openComment()" class="success">Commenter</button>
       <button
-        v-if="user.id === post.userId"
+        v-if="user.id === post.userId || user.isAdmin === true"
         class="success"
         @click="openUpdatingPost()"
       >
         Modifier
       </button>
       <button
-        v-if="user.id === post.userId"
+        v-if="user.id === post.userId || user.isAdmin === true"
         class="danger"
         @click="deletePost(post)"
       >
@@ -86,9 +92,14 @@ import HttpService from "../../services/httpService";
 import CreateComment from "../Comment/CreateComment.vue";
 import CommentComponent from "../Comment/CommentComponent.vue";
 import MomentService from "../../services/momentService";
+//import SimpleUpload from "../Post/SimpleUpload.vue";
 
 export default {
-  components: { CreateComment, CommentComponent },
+  components: {
+    CreateComment,
+    CommentComponent,
+    //SimpleUpload
+  },
   name: "PostComponent",
   props: { post: Object, user: Object },
   data() {
@@ -141,6 +152,12 @@ export default {
     });
   },
   methods: {
+    getImgUrl(file) {
+      const withoutQuotes = file.replace(/"/g, "");
+      const url = "http://localhost:3000/" + withoutQuotes;
+
+      return url;
+    },
     changeLikeButtonStyle() {
       const likeBtn = document.getElementById("likeBtn");
       const alreadyLiked = this.post.likesOrDislikes.some(
@@ -179,7 +196,6 @@ export default {
       };
       HttpService.post(route, body)
         .then(() => {
-          console.log(this.post);
           this.$emit("postUpdated", true);
         })
         .catch((err) => {

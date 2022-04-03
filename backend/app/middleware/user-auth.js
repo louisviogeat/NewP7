@@ -14,6 +14,9 @@ module.exports = (req, res, next) => {
             User.findByPk(userId).then((res) => {
                 req.auth = { userId: userId, isAdmin: res.dataValues.isAdmin };
                 next();
+            }).catch((err) => {
+                res.status(401).json({ message: 'Identifiants non valides' });
+                next();
             })
         }
     } catch (error) {

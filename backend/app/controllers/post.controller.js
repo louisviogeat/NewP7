@@ -1,26 +1,23 @@
 const { sequelize } = require("../models");
 const db = require("../models");
 const base64Img = require('base64-img');
+const fs = require('fs');
 const Post = db.posts;
 const Comment = db.comments
 
+
 exports.createPost = (req, res) => {
+
     if (!req.body.text) {
         res.status(400).send({
             message: 'Les données du post sont vides'
         });
         return
     }
-    let file = '';
-    if (req.body.file) {
-        base64Img.img(req.body.file, '../files', Date.now(), (err, filepath) => {
-            const pathArr = filepath.split('/')
-            file = pathArr[pathArr.length - 1];
-        })
-        //file = `${req.protocol}://${req.get('host')}/files/${req.file.filename}`
-    };
+
     return Post.create({
         text: req.body.text,
+        file: req.body.file,
         userId: req.params.id,
     })
         .then((post) => {
@@ -78,6 +75,13 @@ exports.updatePost = (req, res) => {
             return;
         }
     }
+    if (req.body.file) {
+        Post.findByPk(req.params.id).then((post) => {
+            if (req.body.file !== post.file) {
+                fs.unlinkSync(JSON.stringify(post.file));
+            }
+        })
+    }
     Post.update(req.body, {
         where: { id: req.params.id },
     }
@@ -92,6 +96,11 @@ exports.delete = (req, res) => {
             return;
         }
     }
+    Post.findByPk(req.params.id).then((post) => {
+        if (post.file) {
+            fs.unlinkSync(post.file);
+        }
+    });
     Post.destroy({
         where: { id: req.params.id }
     }).then(() => res.status(200).json({ message: 'Post supprimé' }))

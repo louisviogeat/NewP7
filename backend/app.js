@@ -25,7 +25,7 @@ app.get('/', (req, res) => {
 });
 
 
-
+app.use('/uploads', express.static('uploads'));
 app.use('/api/user', userRoutes);
 app.use('/api', postRoutes);
 app.use('/api', commentRoutes);

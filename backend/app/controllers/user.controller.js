@@ -50,10 +50,12 @@ exports.login = (req, res) => {
                         )
                     });
                 })
-                .catch(error => res.status(500).json({ message: `Erreur lors de la connexion de l'utilisateur : ${error}.` }));
+                .catch(() => {
+                    res.status(500).json({ message: `Erreur lors de la connexion de l'utilisateur.` })
+                });
         })
-        .catch(error => {
-            res.status(500).json({ message: `Erreur lors de la connexion de l'utilisateur : ${error}.` })
+        .catch(() => {
+            res.status(500).json({ message: `Erreur lors de la connexion de l'utilisateur` })
         })
 }
 
@@ -63,9 +65,9 @@ exports.findAll = (req, res) => {
     }).then((users) => {
         res.send(users);
         return users;
-    }).catch(err => {
+    }).catch(() => {
         res.status(500).send({
-            message: `Erreur lors de la recherche de tous les utilisateurs : ${err}.`
+            message: `Erreur lors de la recherche de tous les utilisateurs.`
         });
     });
 };
@@ -78,22 +80,24 @@ exports.findUserById = (req, res) => {
                 res.send(user);
                 return user;
             } else {
-                res.status(404).send({
-                    message: `Utilisateur n°${id} non trouvé.`
+                res.status(404).json({
+                    message: `Utilisateur non trouvé.`
                 });
             }
         })
-        .catch((err) => {
-            res.status(500).send({
-                message: `Erreur lors de la recherche l'utilisateur : ${error}.`
+        .catch(() => {
+            res.status(500).json({
+                message: `Erreur lors de la recherche l'utilisateur.`
             });
         });
 };
 
 exports.deleteUser = (req, res) => {
     if (!req.auth.isAdmin) {
-        res.status(401).json({ message: 'Seul un profil admin peut supprimer un utilisateur' });
-        return;
+        if (req.auth.userId !== req.params.id) {
+            res.status(401).json({ message: 'Seul un profil admin peut supprimer un utilisateur' });
+            return;
+        }
     }
     User.destroy({
         where: { id: req.params.id }
