@@ -77,8 +77,10 @@ exports.updatePost = (req, res) => {
     }
     if (req.body.file) {
         Post.findByPk(req.params.id).then((post) => {
-            if (req.body.file !== post.file) {
-                fs.unlinkSync(JSON.stringify(post.file));
+            if (req.body.file != post.file) {
+                //let imgToDelete = JSON.stringify(post.file);
+
+                fs.unlinkSync(post.file);
             }
         })
     }

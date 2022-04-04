@@ -48,7 +48,8 @@ export default {
       formData.append("file", this.file);
       try {
         axios.post("http://localhost:3000/api/upload", formData).then((res) => {
-          this.$emit("imageUpdated", res);
+          console.log("img", res);
+          this.$emit("imageUpdated", res.data.file.path);
         });
         this.message = "Le fichier a bien été importé";
         this.file = "";

@@ -16,7 +16,7 @@
 
     <div>
       <input v-if="updatingPost" v-model="text" type="text" />
-      <!--SimpleUpload @imageUpdated="imageUpdated" v-if="updatingPost" /-->
+      <SimpleUpload @imageUpdated="imageUpdated" v-if="updatingPost" />
       <div>
         <button v-if="updatingPost" class="success" @click="updatePost(post)">
           Confirmer la modification
@@ -92,13 +92,13 @@ import HttpService from "../../services/httpService";
 import CreateComment from "../Comment/CreateComment.vue";
 import CommentComponent from "../Comment/CommentComponent.vue";
 import MomentService from "../../services/momentService";
-//import SimpleUpload from "../Post/SimpleUpload.vue";
+import SimpleUpload from "../Post/SimpleUpload.vue";
 
 export default {
   components: {
     CreateComment,
     CommentComponent,
-    //SimpleUpload
+    SimpleUpload,
   },
   name: "PostComponent",
   props: { post: Object, user: Object },
@@ -215,7 +215,15 @@ export default {
           console.error("dislike error", err);
         });
     },
+    imageUpdated(payload) {
+      const newPost = this.post;
+      console.log("a", this.post);
+      newPost.file = payload;
+      console.log("b", newPost);
+      this.updatePost(newPost);
+    },
     updatePost(post) {
+      console.log(post);
       const route = "post/" + post.id;
       const body = {
         text: this.text,

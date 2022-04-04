@@ -72,7 +72,7 @@ exports.findAll = (req, res) => {
     });
 };
 
-exports.findUserById = (req, res) => {
+exports.findUserById = (req, res, next) => {
     const id = req.params.id;
     return User.findByPk(id, { include: ["posts", "comments"] })
         .then((user) => {
@@ -85,16 +85,16 @@ exports.findUserById = (req, res) => {
                 });
             }
         })
-        .catch(() => {
-            res.status(500).json({
-                message: `Erreur lors de la recherche l'utilisateur.`
-            });
+        .catch((err) => {
+            return next([err])
         });
+
 };
 
 exports.deleteUser = (req, res) => {
     if (!req.auth.isAdmin) {
-        if (req.auth.userId !== req.params.id) {
+        if (req.auth.userId != req.params.id) {
+            console.log('ici', req.auth.userId != req.params.id);
             res.status(401).json({ message: 'Seul un profil admin peut supprimer un utilisateur' });
             return;
         }
